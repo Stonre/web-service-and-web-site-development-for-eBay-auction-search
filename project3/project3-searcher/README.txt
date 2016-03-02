@@ -1,0 +1,1 @@
+In the getXMLDataForItemId function, I refer to some ideas of program constructure from https://github.com/lowellbander/CS144/blob/master/vm-shared/project3-searcher/src/edu/ucla/cs/cs144/AuctionSearch.java

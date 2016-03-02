@@ -1,0 +1,52 @@
+<project default="all">
+  <property name="obj-dir" location="obj" />
+  <property name="lib-dir" location="lib" />
+  <property name="src-dir" location="src" />
+  <property environment="env"/> 
+  <target name="init">
+    <mkdir dir="${obj-dir}" />
+    <mkdir dir="${lib-dir}" />
+	<mkdir dir="${src-dir}" />
+  </target>
+
+  <target name="clean-init">
+    <delete dir="${obj-dir}" />
+    <delete dir="${lib-dir}" />
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src-dir}"
+           destdir="${obj-dir}" />
+  </target>
+
+  <target name="clean-compile">
+    <delete>
+      <fileset dir="${obj-dir}" includes="**/*.class" />
+    </delete>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar destfile="${lib-dir}/MyParse.jar"
+         basedir="${obj-dir}" />
+  </target>
+
+  <target name="clean-jar">
+    <delete file="${lib-dir}/MyParse.jar" />
+  </target>
+
+  <target name="run-all" depends="jar">
+    <fileset dir="${env.EBAY_DATA}" id="f">
+	<include name="items-*.xml" />
+    </fileset>
+    <pathconvert property="cmdXmls" refid="f" pathsep=" " />
+
+    <java classname="MyParse" fork="true">
+        <classpath path="${lib-dir}/MyParse.jar" />
+	<arg line="${cmdXmls}" />
+    </java>
+  </target>
+
+  <target name="all" depends="run-all"/>
+
+  <target name="clean" depends="clean-init"/>
+</project>
